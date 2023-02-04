@@ -45,8 +45,13 @@ function sendSms(phone, message) {
 app.post("/send-sms", (req, res) => {
   try {
     const number = `+234${req.body.number}`;
-    const message = `Hello. We have received your booking and we are on our way. Call 08104459237 to get real-time updates on our location`;
-    console.log(number);
+    const confirm = req.body.confirm;
+    let message;
+    if (confirm == "true") {
+      message = `Hello. We have received your booking and we are on our way. Call 08104459237 to get real-time updates on our location`;
+    } else {
+      message = `Oops. Your order has been cancelled`;
+    }
     sendSms(number, message)
       .then((xx) => {
         console.log(xx);
