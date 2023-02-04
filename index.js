@@ -46,11 +46,17 @@ app.post("/send-sms", (req, res) => {
     const number = req.body.number;
     const message = `Hello. We have received your booking and we are on our way. Call 09022618844 to get real-time updates on our location`;
     console.log(number);
-    sendSms(number, message);
-    res.json({
-      status: 200,
-      message: "message sent",
-    });
+    sendSms(number, message)
+      .then((xx) => {
+        console.log(xx);
+        res.json({
+          status: 200,
+          message: "message sent",
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   } catch (error) {
     res.json(error);
   }
