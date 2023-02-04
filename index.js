@@ -47,7 +47,7 @@ app.post("/send-sms", (req, res) => {
     const number = `+234${req.body.number}`;
     const confirm = req.body.confirm;
     let message;
-    if (confirm == "true") {
+    if (confirm) {
       message = `Hello. We have received your booking and we are on our way. Call 08104459237 to get real-time updates on our location`;
     } else {
       message = `Oops. Your order has been cancelled`;
