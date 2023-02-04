@@ -56,6 +56,7 @@ app.post("/send-sms", (req, res) => {
       })
       .catch((err) => {
         console.log(err);
+        res.send(err);
       });
   } catch (error) {
     res.json(error);
