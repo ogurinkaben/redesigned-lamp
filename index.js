@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 // Add cors
 const cors = require("cors")({ origin: true });
+app.use(cors);
 // Import Body Parser
 const bodyParser = require("body-parser");
 app.use(bodyParser.json());
