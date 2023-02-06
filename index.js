@@ -42,9 +42,54 @@ function sendSms(phone, message) {
       });
   });
 }
+// format phone number to be like '2348162099369'
+function formatNigerianPhoneNumber(phoneNumber) {
+  // Remove all non-numeric characters from the input phone number
+  phoneNumber = phoneNumber.replace(/\D/g, '');
+
+  // Check if the input phone number has a length of 11 digits, 10 digits, 13 digits, or 14 digits
+  if (phoneNumber.length === 11) {
+    // Remove the first digit (which must be a zero)
+    phoneNumber = phoneNumber.substr(1);
+  } else if (phoneNumber.length !== 10 && phoneNumber.length !== 13) {
+     return false;
+  }
+
+  // Check if the input phone number already has a 234 or +234 prefix
+  if (phoneNumber.startsWith("234")) {
+    phoneNumber = phoneNumber.substr(3);
+  } else if (phoneNumber.startsWith("+234")) {
+    phoneNumber = phoneNumber.substr(4);
+  }
+
+  // Add the Nigerian country code (234) to the beginning of the input phone number
+  phoneNumber = "234" + phoneNumber;
+
+  return phoneNumber;
+}
+
+
+
 app.post("/send-sms", (req, res) => {
   try {
-    const number = `+234${req.body.number}`;
+    
+    const phoneNumber = req.body.number;
+    
+    if(!phoneNumber){
+      res.json({
+        status: 400,
+        message: 'phone number cannot be empty'
+      })
+    }
+      
+    const number = formatNigerianPhoneNumber(phoneNumber);
+    if(!number){
+      res.json({
+       status: 400,
+       message: 'Not a valid phone number'
+      })
+    }
+      
     const confirm = req.body.confirm;
     let message;
     if (confirm) {
